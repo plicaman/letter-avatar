@@ -34,13 +34,19 @@ class LetterAvatar
      */
     protected $image_manager;
 
+    /**
+     * @var string
+     */
+    protected $color;
 
-    public function __construct($name, $shape = 'circle', $size = '48')
+
+    public function __construct($name, $shape = 'circle', $size = '48', $color  = null)
     {
         $this->setName($name);
         $this->setImageManager(new ImageManager());
         $this->setShape($shape);
         $this->setSize($size);
+        $this->setColor($color);
     }
 
     /**
@@ -99,6 +105,10 @@ class LetterAvatar
         return $this->size;
     }
 
+    public function setColors($color)
+    {
+        $this->color = $color;
+    }
     /**
      * @param int $size
      */
@@ -126,17 +136,23 @@ class LetterAvatar
             $number_of_word++;
         }
 
-        $colors = [
+        if($this->color){
+            $color = $this->color
+        }else{
+             $colors = [
             "#1abc9c", "#2ecc71", "#3498db", "#9b59b6", "#34495e", "#16a085", "#27ae60", "#2980b9", "#8e44ad", "#2c3e50",
             "#f1c40f", "#e67e22", "#e74c3c", "#ecf0f1", "#95a5a6", "#f39c12", "#d35400", "#c0392b", "#bdc3c7", "#7f8c8d",
-        ];
+            ];
 
-        $char_index  = ord($this->name_initials[0]) - 64;
-        $color_index = $char_index % 20;
-        $color       = $colors[$color_index];
-        if (!$color) {
-            $color   = $colors[rand(0, count($colors)-1)];
+            $char_index  = ord($this->name_initials[0]) - 64;
+            $color_index = $char_index % 20;
+            $color       = $colors[$color_index];
+            if (!$color) {
+                $color   = $colors[rand(0, count($colors)-1)];
+            }
         }
+
+       
 
         if ($this->shape == 'circle') {
             $canvas = $this->image_manager->canvas(480, 480);
